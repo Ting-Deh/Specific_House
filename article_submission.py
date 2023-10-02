@@ -10,6 +10,8 @@ Importantly, this module works with others like `get_next_article_id` and `magaz
 from get_next_article_id import get_next_article_id
 from input_validation import get_input_with_validation
 from magazine_selection import get_magazine_id
+from edition_validation import get_edition_input
+
 
 import mysql.connector
 from datetime import datetime
@@ -41,7 +43,7 @@ def article_submission():
             # is_test_submission = test_submission.lower() in ["y", "yes"]
             magazine_id = get_magazine_id(cursor, is_test_submission)
             #  magazine_id = input("Enter Magazine ID (e.g., M1, M2, M3, M4): ")
-            edition = input("Enter edition: ")
+            edition = get_edition_input()
             release_date = input("Enter release date (YYYY-MM-DD): ")
 
             inhouse_author = input("Is the author in-house? (Y/N): ")
