@@ -1,9 +1,18 @@
+
+"""
+Handles article submissions to the database.
+
+Functions:
+article_submission(): Gathers user inputs for article attributes and adds the new article to the database.
+Importantly, this module works with others like `get_next_article_id` and `magazine_selection` to enhance the submission process.
+"""
+
 from get_next_article_id import get_next_article_id
 from input_validation import get_input_with_validation
+from magazine_selection import get_magazine_id
 
 import mysql.connector
 from datetime import datetime
-
 
 
 # Define your database credentials
@@ -13,7 +22,6 @@ db_config = {
     "password": "Green_05!!",
     "database": "olim_spec_house3"
 }
-
 
 def article_submission():
     try:
@@ -30,7 +38,9 @@ def article_submission():
             article_id = get_next_article_id(cursor, is_test_submission)
             article_name = get_input_with_validation(cursor, "Enter article name: ", "ArticleID", "Articles", 100)
             short_title = get_input_with_validation(cursor, "Enter short title: ", "ShortTitle", "Articles", 150)
-            magazine_id = input("Enter Magazine ID (e.g., M1, M2, M3, M4): ")
+            # is_test_submission = test_submission.lower() in ["y", "yes"]
+            magazine_id = get_magazine_id(cursor, is_test_submission)
+            #  magazine_id = input("Enter Magazine ID (e.g., M1, M2, M3, M4): ")
             edition = input("Enter edition: ")
             release_date = input("Enter release date (YYYY-MM-DD): ")
 
@@ -72,5 +82,5 @@ def article_submission():
     except mysql.connector.Error as e:
         print(f"Error connecting to the MySQL database: {e}")
 
-# To submit an article, simply call the function
+# To submit an article, call the function
 article_submission()
