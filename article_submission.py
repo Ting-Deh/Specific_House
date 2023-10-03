@@ -11,6 +11,7 @@ from get_next_article_id import get_next_article_id
 from input_validation import get_input_with_validation
 from magazine_selection import get_magazine_id
 from edition_validation import get_edition_input
+from release_date_validation import get_valid_release_date
 
 
 import mysql.connector
@@ -44,7 +45,8 @@ def article_submission():
             magazine_id = get_magazine_id(cursor, is_test_submission)
             #  magazine_id = input("Enter Magazine ID (e.g., M1, M2, M3, M4): ")
             edition = get_edition_input()
-            release_date = input("Enter release date (YYYY-MM-DD): ")
+            release_date = get_valid_release_date()
+            # release_date = input("Enter release date (YYYY-MM-DD): ")
 
             inhouse_author = input("Is the author in-house? (Y/N): ")
             freelancer_author_id = input("Enter Freelancer Author ID or 'NULL': ")
