@@ -14,6 +14,7 @@ from edition_validation import get_edition_input
 from release_date_validation import get_valid_release_date
 from author_processing import get_author_id
 from photographer_processing import get_photographer_id
+from file_submission import get_valid_filename
 
 
 import mysql.connector
@@ -100,7 +101,8 @@ def article_submission():
             # freelancer_photographer_id = input("Enter Freelancer Photographer ID or 'NULL': ")
             # permanent_staff_photographer_id = input("Enter Permanent Staff Photographer ID or 'NULL': ")
 
-            filename = input("Enter Filename: ")
+            filename = get_valid_filename()
+            # filename = input("Enter Filename: ")
 
             # Get today's date
             upload_date = datetime.now().date()
