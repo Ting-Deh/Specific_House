@@ -13,6 +13,7 @@ from magazine_selection import get_magazine_id
 from edition_validation import get_edition_input
 from release_date_validation import get_valid_release_date
 from author_processing import get_author_id
+from photographer_processing import get_photographer_id
 
 
 import mysql.connector
@@ -72,14 +73,33 @@ def article_submission():
             # freelancer_author_id = input("Enter Freelancer Author ID or 'NULL': ")
             # permanent_staff_author_id = input("Enter Permanent Staff Author ID or 'NULL': ")
 
-            inhouse_photos = input("Are the photos in-house? (Y/N): ")
-            freelancer_photographer_id = input("Enter Freelancer Photographer ID or 'NULL': ")
-            permanent_staff_photographer_id = input("Enter Permanent Staff Photographer ID or 'NULL': ")
+            photographer_type, photographer_id = get_photographer_id(cursor)
+
+            if not photographer_id:
+                print("Article submission process terminated.")
+                return
+
+            freelancer_photographer_id = None
+            permanent_staff_photographer_id = None
+
+            if photographer_type == 'Freelancer':
+                freelancer_photographer_id = photographer_id
+            elif photographer_type == 'Staff':
+                permanent_staff_photographer_id = photographer_id
+
+            # inhouse_photos = input("Are the photos in-house? (Y/N): ")
+            # freelancer_photographer_id = input("Enter Freelancer Photographer ID or 'NULL': ")
+            # permanent_staff_photographer_id = input("Enter Permanent Staff Photographer ID or 'NULL': ")
 
             filename = input("Enter Filename: ")
 
             # Get today's date
             upload_date = datetime.now().date()
+
+            if photographer_type == 'Freelancer':
+                inhouse_photos = 'N'
+            elif photographer_type == 'Staff':
+                inhouse_photos = 'Y'
 
             # Insert the article into the database
             insert_query = """
