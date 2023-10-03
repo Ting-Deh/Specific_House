@@ -31,9 +31,15 @@ def get_author_id(cursor):
 
         # If we reach here, the author was not found in either table
         print(f"Author '{author_name}' not found in the database.")
-        choice = input(
-            "Would you like to try again, or stop the article submission process? (try/stop): ").strip().lower()
-        if choice == 'stop':
-            print("If this is a new author, please contact support to register them in the system.")
-            return None
+        while True:
+            choice = input(
+                "Would you like to try again, or stop the article submission process? (try/stop): ").strip().lower()
+            if choice == 'stop':
+                print("If this is a new author, please contact support to register them in the system.")
+                return None
+            elif choice == 'try':
+                break
+            else:
+                print("Invalid choice. Please enter 'try' to continue or 'stop' to exit.")
+
 
