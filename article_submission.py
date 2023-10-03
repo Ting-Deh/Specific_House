@@ -12,6 +12,7 @@ from input_validation import get_input_with_validation
 from magazine_selection import get_magazine_id
 from edition_validation import get_edition_input
 from release_date_validation import get_valid_release_date
+from author_processing import get_author_id
 
 
 import mysql.connector
@@ -48,9 +49,28 @@ def article_submission():
             release_date = get_valid_release_date()
             # release_date = input("Enter release date (YYYY-MM-DD): ")
 
-            inhouse_author = input("Is the author in-house? (Y/N): ")
-            freelancer_author_id = input("Enter Freelancer Author ID or 'NULL': ")
-            permanent_staff_author_id = input("Enter Permanent Staff Author ID or 'NULL': ")
+            # author_name = input("Enter the author's name (or type 'exit' to stop): ")
+            # inhouse_author = input("Is the author in-house? (Y/N): ")
+            author_details = get_author_id(cursor)
+
+            if not author_details:
+                print("Article submission process terminated.")
+                return
+
+            author_type, author_id = author_details
+
+            freelancer_author_id = None
+            permanent_staff_author_id = None
+
+            if author_type == 'Freelancer':
+                freelancer_author_id = author_id
+                inhouse_author = 'N'
+            elif author_type == 'Staff':
+                permanent_staff_author_id = author_id
+                inhouse_author = 'Y'
+
+            # freelancer_author_id = input("Enter Freelancer Author ID or 'NULL': ")
+            # permanent_staff_author_id = input("Enter Permanent Staff Author ID or 'NULL': ")
 
             inhouse_photos = input("Are the photos in-house? (Y/N): ")
             freelancer_photographer_id = input("Enter Freelancer Photographer ID or 'NULL': ")
