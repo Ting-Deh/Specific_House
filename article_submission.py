@@ -15,6 +15,7 @@ from release_date_validation import get_valid_release_date
 from author_processing import get_author_id
 from photographer_processing import get_photographer_id
 from file_submission import get_valid_filename
+from submission_summary import display_submission_summary
 
 
 import mysql.connector
@@ -112,6 +113,21 @@ def article_submission():
             elif photographer_type == 'Staff':
                 inhouse_photos = 'Y'
 
+            article_details = {
+                "ArticleID": article_id,
+                "Article Name": article_name,
+                "Short Title": short_title,
+                "Magazine ID": magazine_id,
+                "Edition": edition,
+                "Release Date": release_date,
+                "Author Type": author_type,
+                "Author ID": author_id,
+                "Photographer Type": photographer_type,
+                "Photographer ID": photographer_id,
+                "Filename": filename,
+                "Upload Date": upload_date.strftime('%Y-%m-%d')  # formatting the date to a string
+            }
+
             # Insert the article into the database
             insert_query = """
             INSERT INTO Articles (
@@ -132,7 +148,8 @@ def article_submission():
             cursor.close()
             conn.close()
 
-            print("Article submitted successfully.")
+            display_submission_summary(article_details)
+            # print("Article submitted successfully.")
 
     except mysql.connector.Error as e:
         print(f"Error connecting to the MySQL database: {e}")
