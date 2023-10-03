@@ -39,7 +39,16 @@ def article_submission():
             cursor = conn.cursor()
 
             # Prompt the user for article information
-            is_test_submission = input("Is this a test submission? (Y/N): ").strip().lower() == 'y'
+            # is_test_submission = input("Is this a test submission? (Y/N): ").strip().lower() == 'y'
+            while True:
+                test_submission_input = input("Is this a test submission? (Y/N): ").strip().lower()
+                if test_submission_input in ["y", "yes", "n", "no"]:
+                    break
+                else:
+                    print("Invalid input. Please enter Y/N or Yes/No.")
+
+            is_test_submission = test_submission_input in ["y", "yes"]
+
             article_id = get_next_article_id(cursor, is_test_submission)
             article_name = get_input_with_validation(cursor, "Enter article name: ", "ArticleID", "Articles", 100)
             short_title = get_input_with_validation(cursor, "Enter short title: ", "ShortTitle", "Articles", 150)
